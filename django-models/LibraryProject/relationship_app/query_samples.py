@@ -8,10 +8,10 @@ django.setup()
 from relationship_app.models import Author, Book, Library, Librarian
 
 def get_books_by_author(author_name):
-    """Query all books written by a specific author."""
+    """Query all books written by a specific author using filter()."""
     try:
         author = Author.objects.get(name=author_name)
-        books = Book.objects.filter(author=author)  # ✅ Uses filter()
+        books = Book.objects.filter(author=author)  # Explicit filter query
         return books
     except Author.DoesNotExist:
         return f"No author found with name {author_name}"
@@ -26,17 +26,18 @@ def get_books_in_library(library_name):
         return f"No library found with name {library_name}"
 
 def get_librarian_for_library(library_name):
-    """Retrieve the librarian assigned to a specific library."""
+    """Retrieve the librarian assigned to a specific library using an explicit query."""
     try:
         library = Library.objects.get(name=library_name)
-        return library.librarian  # ✅ Retrieves the librarian correctly
+        librarian = Librarian.objects.get(library=library)  # ✅ Explicit query
+        return librarian
     except Library.DoesNotExist:
         return f"No library found with name {library_name}"
     except Librarian.DoesNotExist:
         return f"No librarian assigned to {library_name}"
 
 if __name__ == "__main__":
-    # Replace with actual names in your database
+    # Replace these values with actual names in your database
     author_name = "J.K. Rowling"
     library_name = "Central Library"
 
@@ -48,4 +49,4 @@ if __name__ == "__main__":
 
     print(f"\nLibrarian for {library_name}:")
     print(get_librarian_for_library(library_name))
-
+    
