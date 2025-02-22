@@ -1,41 +1,29 @@
-# query_samples.py
-
 import os
 import django
 
 # Set up Django environment
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project_name.settings')  # Replace with your project name
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django-models.settings")
 django.setup()
 
 from relationship_app.models import Author, Book, Library, Librarian
 
-def query_books_by_author(author_name):
-    books = Book.objects.filter(author__name=author_name)
-    if books.exists():
-        print(f"Books by {author_name}: {[book.title for book in books]}")
-    else:
-        print(f"No books found for author {author_name}.")
+# Query all books by a specific author
+def get_books_by_author(author_name):
+    author = Author.objects.get(name=author_name)
+    return author.books.all()
 
-def list_books_in_library(library_name):
-    try:
-        library = Library.objects.get(name=library_name)
-        books = library.books.all()
-        print(f"Books in {library_name}: {[book.title for book in books]}")
-    except Library.DoesNotExist:
-        print(f"No library found with the name {library_name}.")
+# List all books in a library
+def get_books_in_library(library_name):
+    library = Library.objects.get(name=library_name)
+    return library.books.all()
 
-def retrieve_librarian_for_library(library_name):
-    try:
-        library = Library.objects.get(name=library_name)
-        if library.librarian:  # Check if the librarian exists
-            print(f"Librarian for {library_name}: {library.librarian.name}")
-        else:
-            print(f"No librarian assigned for {library_name}.")
-    except Library.DoesNotExist:
-        print(f"No library found with the name {library_name}.")
+# Retrieve the librarian for a library
+def get_librarian_for_library(library_name):
+    library = Library.objects.get(name=library_name)
+    return library.librarian
 
-# Example usage
 if __name__ == "__main__":
-    query_books_by_author("J.K. Rowling")  # Replace with an actual author name in your database
-    list_books_in_library("Central Library")  # Replace with an actual library name in your database
-    retrieve_librarian_for_library("Central Library")  # Replace with an actual library name in your database
+    # Example queries (modify these with actual data from your database)
+    print("Books by Author:", list(get_books_by_author("J.K. Rowling")))
+    print("Books in Library:", list(get_books_in_library("Central Library")))
+    print("Librarian for Library:", get_librarian_for_library("Central Library"))
