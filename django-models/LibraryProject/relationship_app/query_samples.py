@@ -7,23 +7,45 @@ django.setup()
 
 from relationship_app.models import Author, Book, Library, Librarian
 
-# Query all books by a specific author
 def get_books_by_author(author_name):
-    author = Author.objects.get(name=author_name)
-    return author.books.all()
+    """Query all books written by a specific author."""
+    try:
+        author = Author.objects.get(name=author_name)
+        books = author.books.all()
+        return books
+    except Author.DoesNotExist:
+        return f"No author found with name {author_name}"
 
-# List all books in a library
 def get_books_in_library(library_name):
-    library = Library.objects.get(name=library_name)
-    return library.books.all()
+    """List all books available in a specific library."""
+    try:
+        library = Library.objects.get(name=library_name)
+        books = library.books.all()
+        return books
+    except Library.DoesNotExist:
+        return f"No library found with name {library_name}"
 
-# Retrieve the librarian for a library
 def get_librarian_for_library(library_name):
-    library = Library.objects.get(name=library_name)
-    return library.librarian
+    """Retrieve the librarian assigned to a specific library."""
+    try:
+        library = Library.objects.get(name=library_name)
+        librarian = library.librarian
+        return librarian
+    except Library.DoesNotExist:
+        return f"No library found with name {library_name}"
+    except Librarian.DoesNotExist:
+        return f"No librarian assigned to {library_name}"
 
 if __name__ == "__main__":
-    # Example queries (modify these with actual data from your database)
-    print("Books by Author:", list(get_books_by_author("J.K. Rowling")))
-    print("Books in Library:", list(get_books_in_library("Central Library")))
-    print("Librarian for Library:", get_librarian_for_library("Central Library"))
+    # Replace with actual names in your database
+    author_name = "J.K. Rowling"
+    library_name = "Central Library"
+
+    print(f"Books by {author_name}:")
+    print(list(get_books_by_author(author_name)))
+
+    print(f"\nBooks in {library_name}:")
+    print(list(get_books_in_library(library_name)))
+
+    print(f"\nLibrarian for {library_name}:")
+    print(get_librarian_for_library(library_name))
