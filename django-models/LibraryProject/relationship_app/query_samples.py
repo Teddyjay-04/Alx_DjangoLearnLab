@@ -11,7 +11,7 @@ def get_books_by_author(author_name):
     """Query all books written by a specific author."""
     try:
         author = Author.objects.get(name=author_name)
-        books = author.books.all()
+        books = Book.objects.filter(author=author)  # ✅ Uses filter()
         return books
     except Author.DoesNotExist:
         return f"No author found with name {author_name}"
@@ -29,8 +29,7 @@ def get_librarian_for_library(library_name):
     """Retrieve the librarian assigned to a specific library."""
     try:
         library = Library.objects.get(name=library_name)
-        librarian = library.librarian
-        return librarian
+        return library.librarian  # ✅ Retrieves the librarian correctly
     except Library.DoesNotExist:
         return f"No library found with name {library_name}"
     except Librarian.DoesNotExist:
@@ -49,3 +48,4 @@ if __name__ == "__main__":
 
     print(f"\nLibrarian for {library_name}:")
     print(get_librarian_for_library(library_name))
+
