@@ -1,6 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from . import views  # Import views from the current app
+from .views import add_book, edit_book, delete_book
 
 urlpatterns = [
     path("login/", LoginView.as_view(template_name="relationship_app/login.html"), name="login"),
