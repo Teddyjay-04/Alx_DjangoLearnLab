@@ -67,3 +67,7 @@ def librarian_view(request):
 @user_passes_test(check_member)
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
+
+@user_passes_test(check_admin)
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html')
