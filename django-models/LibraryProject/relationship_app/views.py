@@ -60,7 +60,10 @@ def check_member(user):
 def admin_view(request):
     return render(request, 'relationship_app/admin_view.html')
 
-@user_passes_test(check_librarian)
+def check_librarian(user):
+    return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
+
+user_passes_test(check_librarian)
 def librarian_view(request):
     return render(request, 'relationship_app/librarian_view.html')
 
