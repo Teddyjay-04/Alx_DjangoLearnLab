@@ -1,6 +1,7 @@
+from .models import Library
 from django.shortcuts import render
-from django.views.generic.detail import DetailView  # ✅ Explicit import for DetailView
-from .models import Book, Library  # ✅ Ensures Library is explicitly imported
+from django.views.generic.detail import DetailView
+from .models import Book, Library 
 
 def list_books(request):
     """Function-based view to list all books in the database."""
@@ -9,7 +10,7 @@ def list_books(request):
 
 class LibraryDetailView(DetailView):
     """Class-based view to display details of a specific library, listing all books available."""
-    model = Library  # ✅ Specifies the Library model
+    model = Library  
     template_name = "relationship_app/library_detail.html"
     context_object_name = "library"
 
