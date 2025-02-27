@@ -126,3 +126,4 @@ LOGIN_REDIRECT_URL = "/"  # Redirect users after login
 LOGOUT_REDIRECT_URL = "/login/"  # Redirect users after logout
 AUTH_USER_MODEL = 'advanced_features_and_security.CustomUser'
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
