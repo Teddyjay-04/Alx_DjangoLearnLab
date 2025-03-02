@@ -142,3 +142,10 @@ SESSION_COOKIE_SECURE = True  # Ensures session cookies are sent only over HTTPS
 SECURE_HSTS_SECONDS = 31536000  # Enforces HTTPS
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
+# Secure Cookies
+SESSION_COOKIE_SECURE = True  # Ensures session cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = True  # Ensures CSRF cookies are only sent over HTTPS
+# Security Headers
+X_FRAME_OPTIONS = "DENY"  # Prevents clickjacking attacks
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevents MIME-type sniffing
+SECURE_BROWSER_XSS_FILTER = True  # Enables browser’s XSS filtering
