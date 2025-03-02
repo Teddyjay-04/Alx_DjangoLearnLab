@@ -127,3 +127,18 @@ LOGOUT_REDIRECT_URL = "/login/"  # Redirect users after logout
 AUTH_USER_MODEL = 'advanced_features_and_security.CustomUser'
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
+import os
+
+DEBUG = False  # Disable debugging in production
+
+ALLOWED_HOSTS = ['yourdomain.com']  # Replace with actual domain
+
+# Security settings
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+CSRF_COOKIE_SECURE = True  # Ensures CSRF cookies are sent only over HTTPS
+SESSION_COOKIE_SECURE = True  # Ensures session cookies are sent only over HTTPS
+SECURE_HSTS_SECONDS = 31536000  # Enforces HTTPS
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
