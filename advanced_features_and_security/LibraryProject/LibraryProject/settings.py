@@ -150,3 +150,5 @@ X_FRAME_OPTIONS = "DENY"  # Prevents clickjacking attacks
 SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevents MIME-type sniffing
 SECURE_BROWSER_XSS_FILTER = True  # Enables browser’s XSS filtering
 SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS
+# Enable HTTPS handling when behind a proxy (e.g., load balancer)
+SECURE_PROXY_SSL_HEADER =True ('HTTP_X_FORWARDED_PROTO', 'https')
