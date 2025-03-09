@@ -131,4 +131,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',  # Optional, allows session-based auth
         'rest_framework.authentication.BasicAuthentication',  # Optional, allows basic auth
     ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Ensure authentication is required
+    ],
+}
+
 }
