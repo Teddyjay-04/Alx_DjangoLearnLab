@@ -1,59 +1,33 @@
 from django.shortcuts import render
-
-# Create your views here.
 from rest_framework import generics, permissions
 from .models import Book
 from .serializers import BookSerializer
 
-class BookListView(generics.ListAPIView):
-    """View to list all books. Accessible to everyone."""
+class BookListView(generics.ListCreateAPIView):
+    """View to list all books and create a new book."""
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]  # Read access for all users
+    permission_classes = [permissions.AllowAny]
 
 class BookDetailView(generics.RetrieveAPIView):
-    """View to retrieve a single book by ID."""
+    """View to retrieve a specific book."""
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [permissions.AllowAny]
 
 class BookCreateView(generics.CreateAPIView):
-    """View to add a new book. Restricted to authenticated users."""
+    """View to create a new book."""
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]  # Only logged-in users can create books
+    permission_classes = [permissions.IsAuthenticated]  # Require authentication for creating a book
 
 class BookUpdateView(generics.UpdateAPIView):
-    """View to update an existing book. Restricted to authenticated users."""
+    """View to update a specific book."""
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]  # Require authentication for updating a book
 
 class BookDeleteView(generics.DestroyAPIView):
-    """View to delete a book. Restricted to authenticated users."""
+    """View to delete a specific book."""
     queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
-class BookCreateView(generics.CreateAPIView):
-    """View to add a new book with extra validation."""
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def perform_create(self, serializer):
-        """Ensure the book author is provided and valid."""
-        if not serializer.validated_data.get('author'):
-            raise serializers.ValidationError("Author field is required.")
-        serializer.save()
-
-class BookUpdateView(generics.UpdateAPIView):
-    """View to update an existing book with validation."""
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def perform_update(self, serializer):
-        """Ensure title and publication year remain valid."""
-        if 'title' in serializer.validated_data and serializer.validated_data['title'].strip() == "":
-            raise serializers.ValidationError("Title cannot be empty.")
-        serializer.save()
+    permission_classes = [permissions.IsAuthenticated]  # Require authentication for deleting a book
