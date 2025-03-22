@@ -7,8 +7,8 @@ from .forms import UserRegisterForm, UserUpdateForm
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Post
-from .forms import PostForm
+from .models import Post, Comment
+from .forms import PostForm, CommentForm
 
 # Register view
 def register(request):
@@ -85,3 +85,42 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         """Restricts deletion to the post's author."""
         post = self.get_object()
         return self.request.user == post.author
+
+def add_comment(request, post_id):
+    """Allows authenticated users to add comments to a blog post."""
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect('post-detail', pk=post.id)
+    else:
+        form = CommentForm()
+
+    return render(request, 'blog/comment_form.html', {'form': form, 'post': post})
+
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """Allows comment authors to update their comments."""
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
+
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """Allows comment authors to delete their comments."""
+    model = Comment
+    template_name = 'blog/comment_confirm_delete.html'
+
+    def get_success_url(self):
+        return self.object.post.get_absolute_url()
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
