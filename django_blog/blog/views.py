@@ -137,3 +137,15 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse("post-detail", kwargs={"pk": self.kwargs["post_id"]})
+
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    fields = ["content"]
+    template_name = "blog/edit_comment.html"
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author  # Only allow the author to edit
+
+    def get_success_url(self):
+        return reverse("post-detail", kwargs={"pk": self.object.post.pk})
